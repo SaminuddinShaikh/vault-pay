@@ -17,4 +17,17 @@ export interface PaymentPayload {
 export interface GatewayResponse {
   transactionId: string;
   status: "success" | "failed";
+  reason?: string;
+}
+
+export interface Transaction {
+  id: string;
+  amount: number;
+  currency: Currency;
+  status: PaymentStatus;
+  reason?: string;
+  timestamp: number;
+  attempts: number;
+  cardLast4: string;
+  cardType: CardType;
 }

@@ -62,7 +62,9 @@ export function PaymentForm() {
 
   const isValid = !Object.values(errors).some(Boolean);
   const isProcessing = status === "processing";
+  const isSuccess = status === "success";
   const blocked = !canRetry && (status === "failed" || status === "timeout");
+  const disabled = (!isValid || isProcessing || blocked || isSuccess) ? true : false;
 
   useEffect(() => {
     if (status === "idle") {
@@ -108,13 +110,16 @@ export function PaymentForm() {
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-6 lg:grid-cols-[1fr_1.1fr]" noValidate>
-      <div className="order-1 lg:order-2 lg:sticky lg:top-6">
+      <div className="order-1 lg:order-2 flex flex-col items-center justify-start gap-4 lg:sticky lg:top-6">
         <CardPreview
           cardNumber={card}
           cardholderName={name}
           expiry={expiry}
           focused={focused}
         />
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+         { amount && (<><Lock className="h-3.5 w-3.5" /> <p>Securely PAY {currency === "INR" ? "₹" : "$"} {amount}</p></>)}
+        </div>
       </div>
       <div className="order-2 lg:order-1 space-y-1">
         <CardInput
@@ -208,10 +213,10 @@ export function PaymentForm() {
           </p>
         )}
 
-        <Button
+        {!isSuccess && <Button
           type="submit"
-          disabled={!isValid || isProcessing || blocked} 
-          className={`mt-2 h-12 w-full bg-gradient-brand text-brand-foreground font-semibold hover:opacity-95 hover:shadow-glow disabled:opacity-50 ${(isProcessing || !isValid || blocked) && "cursor-wait"}`}
+          disabled={disabled} 
+          className={`mt-2 h-12 w-full bg-gradient-brand text-brand-foreground font-semibold hover:opacity-95 hover:shadow-glow disabled:opacity-50 ${disabled ? "cursor-wait opacity-50" : "cursor-pointer"}`}
         >
           {isProcessing ? (
             <>
@@ -222,7 +227,7 @@ export function PaymentForm() {
           ) : (
             `Pay ${currency === "INR" ? "₹" : "$"}${amount || "0.00"}`
           )}
-        </Button>
+        </Button>}
       </div>
     </form>
   );

@@ -2,6 +2,8 @@
 
 import { ShieldCheck } from "lucide-react";
 import { PaymentForm } from "./PaymentForm";
+import { StatusScreen } from "./StatusScreen";
+import { TransactionHistory } from "./TransactionHistory";
 
 export function PaymentPage() {
   return (
@@ -13,12 +15,15 @@ export function PaymentPage() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-base font-semibold tracking-tight">Vault pay</h1>
+              <h1 className="text-base font-semibold tracking-tight">Vaultpay</h1>
               <p className="text-[11px] uppercase tracking-widest text-muted-foreground">
-                Safe payments solution
+                Secure payments demo
               </p>
             </div>
           </div>
+          <span className="hidden sm:inline text-xs text-muted-foreground">
+            No real cards. Test environment.
+          </span>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
@@ -26,10 +31,10 @@ export function PaymentPage() {
             <div className="rounded-2xl border border-border bg-surface/60 backdrop-blur p-5 sm:p-7 shadow-card">
               <PaymentForm />
             </div>
-            <h1>Payment Status</h1>
+            <StatusScreen />
           </div>
           <aside className="lg:sticky lg:top-6 lg:self-start">
-           <h1>TransactionHistory</h1>
+            <TransactionHistory />
           </aside>
         </div>
       </div>
