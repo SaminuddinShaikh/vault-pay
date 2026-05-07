@@ -9,7 +9,7 @@ export function PaymentPage() {
   return (
     <main className="min-h-screen px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto w-full max-w-6xl">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8">
           <div className="flex items-center gap-2">
             <div className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-brand text-brand-foreground shadow-glow">
               <ShieldCheck className="h-5 w-5" />
@@ -21,9 +21,6 @@ export function PaymentPage() {
               </p>
             </div>
           </div>
-          <span className="hidden sm:inline text-xs text-muted-foreground">
-            No real cards. Test environment.
-          </span>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">

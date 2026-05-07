@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vault pay Payment Gateway UI
 
-## Getting Started
+Payment gateway UI built with Next.js 15 (App Router), TypeScript, Redux Toolkit, and Tailwind CSS. No third-party payment SDK used gateway behaviour is simulated via a Next.js Route Handler.
 
-First, run the development server:
+## Setup
 
-```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open http://localhost:3000,  http://localhost:3000.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Stack
 
-## Learn More
+Next.js 15 — App Router, Route Handlers
+TypeScript — strict mode, no any
+Redux Toolkit — global payment state
+Tailwind CSS — styling
+Radix UI — accessible primitives dialog, select, label boiler plate code of mine sor setup and layout also
+lucide-react — icons
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How the gateway simulation works
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+POST /api/pay returns one of three outcomes, randomised server-side:
 
-## Deploy on Vercel
+Outcome Probability
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Success prox 60%
+Failed approx 25% 
+Timeout approx 15% 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The frontend cancels the request after 6 seconds using AbortController and shows a timeout state.
+
+## Assumptions
+
+Card validation uses the Luhn algorithm same as real card networks.
+Transaction IDs are generated with crypto.randomUUID() before the first attempt and reused on retries, so history stays deduplicated.
+History is capped at 50 entries in localStorage.
+Dark theme only no light mode toggle needed for a demo.
+Currency limited to INR and USD as specified.
+
+
+## What I'd improve given more time
+
+Add Playwright e2e tests covering the full lifecycle idle → processing → success/failed/timeout → retry
+Add unit tests for all validators and the Luhn check
+Rate limiting on /api/pay with IP-based throttling
+A proper toast system for non-blocking feedback instead of relying only on the status screen
+Skeleton loaders for the history panel on first paint
+Animate the card flip to show CVV on the back face
+HMAC request signing between client and the route handler
+Error boundary around TransactionHistory so a corrupted localStorage entry doesn't crash the page
