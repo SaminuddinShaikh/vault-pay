@@ -1,6 +1,6 @@
 # Vault pay Payment Gateway UI
 
-Payment gateway UI built with Next.js 15 (App Router), TypeScript, Redux Toolkit, and Tailwind CSS. No third-party payment SDK used gateway behaviour is simulated via a Next.js Route Handler.
+Payment gateway UI built with Next.js 15 (App Router), TypeScript, Redux Toolkit, and Tailwind CSS. No third-party payment SDK used gateway simulation via a Next.js Route Handler.
 
 ## Setup
 
@@ -51,3 +51,4 @@ Skeleton loaders for the history panel on first paint
 Animate the card flip to show CVV on the back face
 HMAC request signing between client and the route handler
 Error boundary around TransactionHistory so a corrupted localStorage entry doesn't crash the page
+will pull transaction data for failed transaction with 3 attempts into the new transaction with auto filling the form fields 

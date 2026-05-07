@@ -16,13 +16,13 @@ export async function POST(req: NextRequest): Promise<NextResponse<GatewayRespon
   const body = (await req.json()) as PaymentPayload;
   const r = Math.random();
 
-  // 15% chance of simulated timeout (responds after 8s — frontend cancels at 6s)
+  // Explicit buckets: 0–0.60 success, 0.60–0.85 failed, 0.85–1.0 timeout
   if (r > 0.85) {
-    await new Promise((resolve) => setTimeout(resolve, 8_000));
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
+    return NextResponse.json({ transactionId: body.transactionId, status: "failed" });
   }
 
-  // Of the remaining 85%: 60% success, 25% failure
-  const outcome: "success" | "failed" = r < 0.6 ? "success" : "failed";
+  const outcome = r < 0.60 ? "success" : "failed";
 
   return NextResponse.json({
     transactionId: body.transactionId,
